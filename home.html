@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDSC Design</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        async function submitForm(event) {
+            event.preventDefault();  // Prevent the form from refreshing the page
+
+            const name = document.getElementById('name').value;
+            const text = document.getElementById('text').value;
+
+            if (!name || !text) {
+                alert('Please fill in both fields.');
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:3000/submit-response', {  // Replace with your API URL
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, text })  // Send form data as JSON
+                });
+
+                if (response.ok) {
+                    alert('Response submitted successfully!');
+                    document.getElementById('name').value = '';  // Clear form fields
+                    document.getElementById('text').value = '';
+                } else {
+                    alert('Failed to submit response.');
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('An error occurred. Please try again.');
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 flex justify-center items-center min-h-screen">
+    <div class="w-full max-w-2xl mx-auto p-6">
+        <!-- Title Section -->
+        <div class="text-center mb-6">
+            <h1 class="text-4xl font-bold text-purple-600">Pragun Kathuria</h1>
+            <p class="text-gray-600 mt-2">Hello! Enter your name and any information you'd like...</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="border p-6 rounded-lg shadow-sm bg-white">
+            <form onsubmit="submitForm(event)">
+                <!-- Name Input -->
+                <div class="mb-4">
+                    <label for="name" class="block text-xl font-semibold">Name:</label>
+                    <input type="text" id="name" placeholder="Enter your name..." 
+                    class="mt-1 p-2 w-full border border-gray-400 rounded-lg">
+                </div>
+
+                <!-- Text Input -->
+                <div class="mb-4">
+                    <label for="text" class="block text-xl font-semibold">Text:</label>
+                    <textarea id="text" rows="5" placeholder="Enter some text..." 
+                    class="mt-1 p-2 w-full border border-gray-400 rounded-lg"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="flex justify-between mt-4">
+                    <button type="submit" class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded-full font-semibold">
+                        Submit
+                    </button>
+                    <a href="resp.html" class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded-full font-semibold">
+                        Access Responses
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
